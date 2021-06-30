@@ -1,5 +1,7 @@
 package me.catsbi.inflearnmvc2.basic;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -99,8 +101,38 @@ public class BasicController {
         model.addAttribute("users", users);
     }
 
+    @GetMapping("/condition")
+    public String condition(Model model) {
+        addUsers(model);
+        return "basic/condition";
+    }
+
+    @GetMapping("/comments")
+    public String comments(Model model) {
+        model.addAttribute("data", "Spring!");
+        return "basic/comments";
+    }
+
+    @GetMapping("/block")
+    public String block(Model model) {
+        addUsers(model);
+        return "basic/block";
+    }
+
+    @GetMapping("/javascript")
+    public String javascript(Model model) throws JsonProcessingException {
+        model.addAttribute("user", new User("userA", 10));
+        addUsers(model);
+        ObjectMapper om = new ObjectMapper();
+
+        String userD = om.writeValueAsString(new User("userD", 30));
+        model.addAttribute("userD", userD);
+
+        return "basic/javascript";
+    }
+
     @Data
-    static class User{
+    static class User {
         private String username;
         private int age;
 
